@@ -81,28 +81,25 @@ export default class BoatSearchResults extends LightningElement {
     const updatedFields = event.detail.draftValues;
     // Update the records via Apex
     updateBoatList({data: updatedFields})
-    .then(() => {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: SUCCESS_TITLE,
-          message: MESSAGE_SHIP_IT,
-          variant: SUCCESS_VARIANT,
-        })
-      );
+    .then(result => {
+      const toast = new ShowToastEvent({
+        title: SUCCESS_TITLE,
+        message: MESSAGE_SHIP_IT,
+        variant: SUCCESS_VARIANT,
+      })
+      this.dispatchEvent(toast);
       this.draftValues = [];
       return this.refresh();
     })
     .catch(error => {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: ERROR_TITLE,
-          message: error.message,
-          variant: ERROR_VARIANT,
-        })
-      );
-    })
+      const toast = new ShowToastEvent({
+        title: ERROR_TITLE,
+        message: error.message,
+        variant: ERROR_VARIANT,
+      });
+      this.dispatchEvent(toast);
+      })
     .finally(() => {
-      
     });
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event
@@ -110,7 +107,7 @@ export default class BoatSearchResults extends LightningElement {
     if (isLoading) {
         this.dispatchEvent(new CustomEvent('loading'));
     } else {
-        this.dispatchEvent(CustomEvent('doneloading'));
+        this.dispatchEvent(new CustomEvent('doneloading'));
     }        
   } 
 }
